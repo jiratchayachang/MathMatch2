@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MathMatch | ระบบแนะนำคู่ด้วยคณิตศาสตร์</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="hero">
+    <div class="container">
+      <p class="eyebrow hero-eyebrow">MATHMATCH</p>
+      <h1>ค้นหาคนที่ไลฟ์สไตล์ใกล้เคียงกัน</h1>
+      <p class="hero-description">
+        เว็บแอปต้นแบบที่ใช้คณิตศาสตร์เปรียบเทียบไลฟ์สไตล์
+        ด้วย Weighted Euclidean Similarity และ Weighted Cosine Similarity
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="notice">
+      <strong>หมายเหตุ:</strong>
+      ระบบนี้ใช้ข้อมูลโปรไฟล์จำลอง 20 คนเพื่อการศึกษา
+      คะแนนเป็นเพียงความคล้ายกันของคำตอบ ไม่ได้หมายความว่าทั้งสองคน
+      จะมีความสัมพันธ์ที่เหมาะสมจริง
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <span>1</span>
+        <div>
+          <h2>ข้อมูลพื้นฐาน</h2>
+          <p>กรอกข้อมูลของคุณและเงื่อนไขของคนที่คุณสนใจ</p>
+        </div>
+      </div>
+
+      <div class="form-grid two-columns">
+        <label>
+          ชื่อเล่น
+          <input
+            id="name"
+            type="text"
+            placeholder="เช่น มายด์"
+            maxlength="30"
+          />
+        </label>
+
+        <label>
+          อายุ
+          <input id="age" type="number" min="18" max="80" value="20" />
+        </label>
+
+        <label>
+          เพศของคุณ
+          <select id="gender">
+            <option value="หญิง">หญิง</option>
+            <option value="ชาย">ชาย</option>
+            <option value="ไม่ระบุ">ไม่ระบุ / อื่น ๆ</option>
+          </select>
+        </label>
+
+        <label>
+          เพศที่สนใจ
+          <select id="interestedGender">
+            <option value="ชาย">ชาย</option>
+            <option value="หญิง">หญิง</option>
+            <option value="ไม่ระบุ">ไม่ระบุ / อื่น ๆ</option>
+            <option value="ทุกเพศ">ทุกเพศ</option>
+          </select>
+        </label>
+
+        <label>
+          อายุขั้นต่ำที่ต้องการ
+          <input id="minAge" type="number" min="18" max="80" value="18" />
+        </label>
+
+        <label>
+          อายุสูงสุดที่ต้องการ
+          <input id="maxAge" type="number" min="18" max="80" value="30" />
+        </label>
+
+        <label class="full-width">
+          เป้าหมายความสัมพันธ์
+          <select id="relationshipGoal">
+            <option value="คุยทำความรู้จัก">คุยทำความรู้จัก</option>
+            <option value="คบหาดูใจ">คบหาดูใจ</option>
+            <option value="เพื่อนใหม่">เพื่อนใหม่</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <span>2</span>
+        <div>
+          <h2>แบบสอบถามไลฟ์สไตล์</h2>
+          <p>ให้คะแนน 1–5 โดย 1 = น้อยที่สุด และ 5 = มากที่สุด</p>
+        </div>
+      </div>
+
+      <div class="lifestyle-list">
+        <div class="lifestyle-row">
+          <div>
+            <h3>การเข้าสังคม</h3>
+            <p>1 = ชอบอยู่เงียบ ๆ, 5 = ชอบพบปะผู้คนมาก</p>
+          </div>
+          <select id="social">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+
+        <div class="lifestyle-row">
+          <div>
+            <h3>การท่องเที่ยว</h3>
+            <p>1 = ไม่ค่อยชอบเดินทาง, 5 = ชอบเดินทางมาก</p>
+          </div>
+          <select id="travel">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+
+        <div class="lifestyle-row">
+          <div>
+            <h3>การออกกำลังกาย</h3>
+            <p>1 = แทบไม่ออกกำลังกาย, 5 = ออกกำลังกายสม่ำเสมอ</p>
+          </div>
+          <select id="exercise">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+
+        <div class="lifestyle-row">
+          <div>
+            <h3>การนอนดึก</h3>
+            <p>1 = นอนเร็ว, 5 = นอนดึกมาก</p>
+          </div>
+          <select id="nightlife">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+
+        <div class="lifestyle-row">
+          <div>
+            <h3>รูปแบบการใช้จ่าย</h3>
+            <p>1 = ประหยัดมาก, 5 = ใช้จ่ายเพื่อความสุขมาก</p>
+          </div>
+          <select id="spending">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <span>3</span>
+        <div>
+          <h2>กำหนดน้ำหนักความสำคัญ</h2>
+          <p>
+            ให้ค่า 1–5 โดย 1 = สำคัญน้อย และ 5 = สำคัญมาก
+            ระบบจะใช้ค่าน้ำหนักนี้ในทั้ง 2 วิธี
+          </p>
+        </div>
+      </div>
+
+      <div class="form-grid weight-grid">
+        <label>
+          การเข้าสังคม
+          <select id="weightSocial">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </label>
+
+        <label>
+          การท่องเที่ยว
+          <select id="weightTravel">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </label>
+
+        <label>
+          การออกกำลังกาย
+          <select id="weightExercise">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </label>
+
+        <label>
+          การนอนดึก
+          <select id="weightNightlife">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </label>
+
+        <label>
+          การใช้จ่าย
+          <select id="weightSpending">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </label>
+      </div>
+
+      <button id="matchButton" type="button">
+        คำนวณและแนะนำ 5 โปรไฟล์ที่ใกล้เคียง
+      </button>
+    </section>
+
+    <section id="resultSection" class="result-section hidden">
+      <div class="result-heading">
+        <div>
+          <p class="eyebrow">ผลลัพธ์การแนะนำ</p>
+          <h2>5 อันดับโปรไฟล์ที่ใกล้เคียงที่สุด</h2>
+          <p class="result-note">
+            ระบบเรียงอันดับจาก Weighted Euclidean Similarity
+            และแสดง Weighted Cosine Similarity เพื่อเปรียบเทียบ
+          </p>
+        </div>
+
+        <p id="resultSummary" class="result-summary"></p>
+      </div>
+
+      <div id="resultList" class="result-list"></div>
+    
+  </main>
+
+  <footer>
+    <p>
+      MathMatch — เว็บแอปต้นแบบสำหรับการใช้เวกเตอร์
+      ระยะห่างแบบยุคลิด และ Cosine Similarity
+    </p>
+  </footer>
+
+  <div id="calculationModal" class="modal hidden">
+    <div id="modalOverlay" class="modal-overlay"></div>
+
+    <div class="modal-content" role="dialog" aria-modal="true">
+      <button id="closeModal" class="close-modal" type="button">
+        ×
+      </button>
+
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
